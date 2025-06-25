@@ -1,0 +1,137 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>📝 Ma To-Do List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        form input[type="text"], form textarea {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #28a745;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul.task-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.task-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        ul.task-list li:hover {
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📝 Ma To-Do List</h2>
+
+        <form method="post" onsubmit="return animateAdd();">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">➕ Ajouter la tâche</button>
+        </form>
+
+        <h3>📋 Liste des tâches</h3>
+        <ul class="task-list" id="taskList">
+            {% for task in tasks %}
+                <li class="{% if task.completed %}completed{% endif %}">
+                    <strong>{{ task.title }}</strong> - {{ task.description }}<br>
+                    {% if task.completed %}
+                        ✅ Terminé
+                    {% else %}
+                        ⏳ En cours
+                    {% endif %}
+                    <div class="actions">
+                        <a href="{% url 'toggle_complete' task.pk %}">
+                            {% if task.completed %}
+                                ✔ Marquer comme non terminé
+                            {% else %}
+                                ✔ Marquer comme terminé
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'update_task' task.pk %}">✏ Modifier</a>
+                        <a href="{% url 'delete_task' task.pk %}">❌ Supprimer</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function animateAdd() {
+            const btn = document.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerText = "Ajout en cours...";
+            setTimeout(() => btn.disabled = false, 2000);
+            return true;
+        }
+    </script>
+</body>
+</html>

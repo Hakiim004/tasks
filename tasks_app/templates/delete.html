@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>❌ Supprimer la tâche</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        a.cancel-link {
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        a.cancel-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>❌ Supprimer la tâche</h2>
+        <p>Es-tu sûr de vouloir supprimer : <strong>{{ task.title }}</strong> ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Oui, supprimer</button>
+            <a href="{% url 'home' %}" class="cancel-link">Annuler</a>
+        </form>
+    </div>
+</body>
+</html>
