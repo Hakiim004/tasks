@@ -21,15 +21,7 @@ def task_view(request):
 def update_task(request , pk):
     tasks = get_object_or_404(Task  , pk = pk  )
     form = task_appForm(request.POST or None , instance= tasks)
-
-    Si c’est une requête POST : on prend les données envoyées.
-
-    Si ce n’est pas une requête POST (donc GET), on envoie juste None, donc le formulaire affichera les données existantes de la tâche.
-
-    instance=tasks signifie que le formulaire est lié à cette tâche précise.
-
-
-    if form.is_valid():
+     if form.is_valid():
         form.save()
 
     return     redirect('home')
